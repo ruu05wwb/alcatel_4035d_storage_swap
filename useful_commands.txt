@@ -1,0 +1,47 @@
+Включить подключение к компьютеру в режиме медиаустройства:
+setprop persist.sys.usb.config mtp,adb
+setprop sys.usb.config mtp,adb
+
+Создание раздела:
+n
+p (e)
+номер первого цилиндра
+номер последнего цилиндра
+w - записать
+p - просмотреть таблицу разделов
+d - удалить раздел
+
+Форматировать раздел в ext4:
+make_ext4fs /dev/block/mmcblk1p1
+или
+mke2fs -t ext4 /dev/block/mmcblk1p9
+
+В fat:
+mkfs.vfat /dev/block/mmcblk1p2
+или
+newfs_msdos -F 32 /dev/block/mmcblk1p2
+
+Смонтировать раздел fat для временного хранения файлов прошивки с ноутбука для последующей заливки через dd:
+mount -t vfat /dev/block/mmcblk1p2 /sdcard2
+ls /sdcard2
+
+Копирование с ноутбука:
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\protect_f" /sdcard2/
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\protect_s" /sdcard2/
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\system.img" /sdcard2/
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\secro.img" /sdcard2/
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\mobile_info.img" /sdcard2/
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\custpack2.img" /sdcard2/
+adb push "C:\Users\RUU05WWB\Downloads\Firmware 4035D\Firmware 4035D\4035D\ebr1" /sdcard2/
+
+
+Посекторно записать файлы образов на соответствующие разделы:
+dd if=/sdcard2/protect_f of=/dev/block/mmcblk1p2 bs=4M
+dd if=/sdcard2/protect_s of=/dev/block/mmcblk1p3 bs=4M
+dd if=/sdcard2/system.img of=/dev/block/mmcblk1p8 bs=4M
+dd if=/sdcard2/secro.img of=/dev/block/mmcblk1p5 bs=4M
+dd if=/sdcard2/mobile_info.img of=/dev/block/mmcblk1p7 bs=4M
+dd if=/sdcard2/custpack2.img of=/dev/block/mmcblk1p6 bs=4M
+
+Занулить определенные сектора:
+dd if=/dev/zero of=/dev/block/mmcblk1 bs=512 count=34

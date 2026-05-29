@@ -1,0 +1,6 @@
+Google Play Services: 17.7.85 (000300-253824076)
+Файловый менеджер+: 1.6.9
+Chrome: 81.0.4044.96
+Google Services Frawework: 4.4.2-1289630
+MX Player: 1.10.17
+Аккаунты Google: 4.4.2-1289630
